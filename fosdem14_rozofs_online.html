@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RozoFS - Dimitri Pertin - FOSDEM 2014, February 2014</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="keywords" content="rozofs,mojette,fosdem,slides,remark" />
+
+    <link rel="stylesheet" href="style.css" />
+    <style type="text/css" media="screen">
+        code.has-jax {font: inherit; font-size: 100%; background:
+            inherit; border: inherit;}
+    </style>
+
+  </head>
+
+  <body>
+    <textarea id="source">
+class: center, middle, inverse
+layout: true
+
+---
+# #rozofs
+### Dimitri Pertin [@denaitre](http://twitter.com/denaitre)
+---
+## RozoFS: The Scalable Distributed File System based on Erasure Coding
+
+.footnote[available on [https://github.com/rozofs/rozofs](https://github.com/rozofs/rozofs)]
+---
+## Distributed Storage Systems
+---
+template: default
+layout: true
+
+
+
+
+---
+# Distributed Storage Systems
+
+### Goal: Improve storage protection and/or performance
+
+RAID controllers for local data distribution over disks
+
+.right-side[.right-side-wrap[![RAID0](./img/raid0.svg)]]
+.right-side[.right-side-wrap[![RAID1](./img/raid1.svg)]]
+.right-side[.right-side-wrap[![RAID2](./img/raid6.svg)]]
+
+* **RAID-0** improve performance, no protection;
+
+* **RAID-1** improve protection, bad performance;
+
+* **RAID-6** trade-off between protection and performance.
+
+
+
+---
+# Distributed Storage Systems
+
+### Distributed storage systems for network data distribution
+
+New client node joins the storage network:
+
+.nas[![NAS](img/nas.svg)]
+
+
+---
+# RozoFS File System
+
+### A Unique Namespace relying on several storage nodes
+
+A POSIX Distributed File System can be simultaneously mounted by multiple
+clients and provides:
+
+* Scalability;
+
+* Flexibility and heterogeneity;
+
+* Access/Location transparency;
+
+* Data protection by an erasure code.
+
+
+
+
+---
+layout: false
+class: center, middle, inverse
+
+## Fault Tolerance
+
+---
+template: default
+layout: true
+
+
+---
+# Fault Tolerance
+
+### Distributed storage systems for network data distribution
+
+Write redundant information over nodes:
+
+.nas[![NAS](img/nas2.svg)]
+
+---
+# Fault Tolerance
+
+### Distributed storage systems for network data distribution
+
+Read a subset is sufficient:
+
+.nas[![NAS](img/nas3.svg)]
+
+---
+# Fault Tolerance
+
+### Distributed storage systems for network data distribution
+
+Face node/link/matrix failures:
+
+.nas[![NAS](img/nas4.svg)]
+
+
+---
+# Fault Tolerance
+
+### Data Replication (3 copies)
+
+.rep[![replication](img/replication2.svg)]
+
+### Remarks:
+
+* Does not need any computation;
+
+* But is very expensive;
+
+* Three copies cost 3 times the original amount of information.
+
+
+---
+# Fault Tolerance
+
+### Data Replication (3 copies)
+
+.nas[![replication](img/nas_replicated3.svg)]
+
+
+
+
+
+
+
+---
+layout: false
+class: center, middle, inverse
+
+## Problem ?
+
+---
+template: default
+layout: true
+
+
+
+
+---
+# Distributed Storage Systems
+
+### What is the problem ?
+
+.idc[![IDC](img/idc12.svg)]
+
+.footnote[[The Digital Universe in 2020](http://www.emc.com/collateral/analyst-reports/idc-the-digital-universe-in-2020.pdf), J. Grantz and D. Reinsel (2012).]
+
+
+
+---
+# Distributed Storage Systems
+
+### What is the problem ?
+
+Data protection plays a major role in storage consumption:
+
+<blockquote>The amount of information indivuals create themselves - writing
+    documents, taking pictures, downloading music, etc. - is **far less than
+    the amount of information being created about them** in the digital universe.
+</blockquote>
+
+<blockquote>The proportion of data in the digital universe that requires
+    protection is **growing faster than the digital itself**, from less than a
+    third in 2010 to more than 40% in 2020.
+</blockquote>
+
+.footnote[[The Digital Universe in 2020](http://www.emc.com/collateral/analyst-reports/idc-the-digital-universe-in-2020.pdf), J. Grantz and D. Reinsel (2012).]
+
+
+
+
+---
+layout: false
+class: center, middle, inverse
+
+## Erasure Coding
+
+---
+template: default
+layout: true
+
+
+---
+# Data Protection by Erasure Coding
+
+### (6,4) Erasure Encoding
+
+.erasure[![erasure](img/ec_encode.svg)]
+
+### Remarks
+
+* Optimal (MDS) codes decode from any subset of $k$ parity blocks out of $n$;
+
+* The system can face $n - k = 2$ failures;
+
+* The storage overhead is $\frac{n}{k} = 1.5$
+
+
+
+
+---
+# Data Protection by Erasure Coding
+
+### (6,4) Erasure Decoding
+
+.erasure[![erasure](img/ec_decode.svg)]
+
+### Remarks
+
+* Optimal (MDS) codes decode from any subset of $k$ parity blocks out of $n$;
+
+* The system can face $n - k = 2$ failures;
+
+* The storage overhead is $\frac{n}{k} = 1.5$
+
+
+
+
+---
+# Data Protection by Erasure Coding
+
+### Comparison ?
+
+.nas[![erasure](img/rep_vs_ec.svg)]
+
+
+
+
+
+---
+layout: false
+class: center, middle, inverse
+
+## The Mojette Transform
+
+
+
+---
+# The Mojette Transform
+
+### Presentation
+
+* The Mojette Transform is a linear operation based on discrete geometry;
+
+* Computes redundant information from user's data;
+
+* The algorithm relies only on additions.
+
+### Performances
+
+* Implementation uses fast XOR;
+
+* Encoding and decoding computations are transparent.
+
+.footnote[[The Mojette Transform, Theory and Applications](http://hal.archives-ouvertes.fr/hal-00367681), J. Guédon (2009).]
+
+
+
+
+---
+# The Mojette Transform
+
+### Protection in Storage Systems
+
+.erasure[![erasure](img/erasure_code3.svg)]
+
+* The MT is applied on $4$ data blocks to produce a set of $6$ parity blocks;
+
+* Parity blocks are distributed over storage nodes;
+
+* Any subset of $k=4$ parity blocks out of the $n=6$ is sufficient to decode.
+
+
+---
+template: default
+layout: true
+
+### Architecture of RozoFS
+
+---
+layout: false
+class: center, middle, inverse
+
+# Architecture of RozoFS
+
+---
+template: default
+layout: true
+
+---
+
+# Architecture of RozoFS
+
+### Metadata Server: exportd service
+
+Stores metadata (data about user data)
+
+* POSIX information (e.g. size, permissions, timestamps, etc.)
+
+* RozoFS related information (e.g. data localisation)
+
+Knows the position of data blocks
+
+* answers data location in reading
+
+* answers where to store projections in writing
+
+---
+
+# Architecture of RozoFS
+
+### Storage Servers: storaged daemon
+
+Hold a storaged daemon that manages
+
+* data storing
+
+* data retrieval
+
+* data accessibility
+
+Data can be stored on:
+
+* local file system (ext4, xfs, etc.) or remote Amazon bucket
+
+* native or other protocol (CIFS, AFP, etc.)
+
+---
+
+# Architecture of RozoFS
+
+### Clients
+
+Rely on FUSE (rozofsmount)
+
+* mounts locally RozoFS
+
+* translates transparently user actions for the network system
+
+Manage encoding (write) and decoding (read)
+
+---
+
+# Production Use Example
+
+![](img/prod.svg)
+
+---
+
+# Academic Use Example
+
+![](img/rozobox.png)
+
+---
+class: center, middle, inverse
+layout: true
+
+---
+
+# Thanks!
+
+### Contribute:
+###[https://github.com/rozofs/rozofs](https://github.com/rozofs/rozofs)
+### Contact me at:
+### [@denaitre](http://twitter.com/denaitre) or [dimitri.pertin@univ-nantes.fr](mailto:dimitri.pertin@univ-nantes.fr)
+### Have a look at
+### [ANR FEC4Cloud project](http://www.agence-nationale-recherche.fr/en/anr-funded-project/?tx_lwmsuivibilan_pi2%5BCODE%5D=ANR-12-EMMA-0031)
+
+.footnote[Slideshow created by [remark](http://gnab.github.com/remark).]
+
+
+
+    </textarea>
+    
+    <!-- load remarkjs -->
+    <script
+        type="text/javascript"
+        src="http://gnab.github.com/remark/downloads/remark-0.6.0.min.js">
+    </script>
+
+    <!-- load MathJax -->
+    <script 
+        type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script
+        type="text/javascript">
+        var slideshow = remark.create();
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        });
+        MathJax.Hub.Queue(function() {
+            $(MathJax.Hub.getAllJax()).map(function(index, elem) {
+                return(elem.SourceElement());
+            }).parent().addClass('has-jax');
+        });
+        MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

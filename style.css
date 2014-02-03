@@ -1,0 +1,102 @@
+  @import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+  @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+
+  body { 
+    font-family: 'Droid Serif';
+    font-size:20px
+  }
+
+  h1, h2, h3 {
+    font-family: 'Yanone Kaffeesatz';
+    font-weight: 400;
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+
+  h1 { font-size: 3.5em; }
+  h2 { font-size: 3em; }
+  h3 { font-size: 1.6em; }
+
+  li p { line-height: 1.25em; }
+
+  pre blockquote {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #333; color: #fff; padding: 1em 2em;
+  }
+
+  blockquote {
+    position: relative;
+    font-style: italic;
+  }
+
+  blockquote cite:before {
+    content: "\2014 \2009";
+  }
+
+  .inverse {
+    background: #272822;
+    color: #777872;
+    text-shadow: 0 0 20px #333;
+  }
+  .inverse h1, .inverse h2 {
+    color: #f3f3f3;
+    line-height: 0.8em;
+  }
+
+  .footnote {
+    position:absolute;
+    bottom: 3em;
+    right: 3em;
+  }
+
+  img {
+    display: block;
+    max-width: 90%;
+    margin:auto;
+  }
+
+  .raid img {
+    max-width: 50%;
+  }
+
+  .scale img {
+    margin-top: 50px;
+  }
+
+  .nas img {
+    max-width:60%;
+  }
+  a {
+    color: #F92672;
+    text-decoration: none;
+  }
+  .raid {
+    max-width: 50%;
+    max-height: 600px;
+  }
+
+  .left-side {
+    width: 40%;
+    float: left;
+    font-size: 75%
+  }
+
+  .right-side {
+    width: 55%;
+    float: right;
+    line-height: 70%;
+  }
+
+  .right-side-wrap {
+    width:100%;
+    padding: 80%;
+  }
+
+  .right-side-wrap img {
+    width: auto;
+    max-width: 95%;
+    height: auto;
+    max-height: 95%;
+  }
